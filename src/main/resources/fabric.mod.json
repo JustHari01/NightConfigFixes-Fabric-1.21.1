@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "nightconfigfixes",
+  "version": "${version}",
+  "name": "Night Config Fixes (Unofficial Fabric Port)",
+  "description": "Recovers unreadable Night Config files on Fabric.",
+  "authors": [
+    "Fuzs (original mod)",
+    "JustHari01 (1.21.1 port)"
+  ],
+  "license": "MPL-2.0",
+  "environment": "*",
+  "mixins": [
+    "nightconfigfixes.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "minecraft": "1.21.1",
+    "java": ">=21"
+  }
+}

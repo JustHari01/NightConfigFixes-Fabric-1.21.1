@@ -1,0 +1,95 @@
+plugins {
+    id 'fabric-loom' version '1.10.5'
+}
+
+version = project.mod_version
+group = project.maven_group
+base.archivesName = project.archives_base_name
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+
+    implementation "com.electronwill.night-config:core:${project.night_config_version}"
+    implementation "com.electronwill.night-config:toml:${project.night_config_version}"
+    include "com.electronwill.night-config:core:${project.night_config_version}"
+    include "com.electronwill.night-config:toml:${project.night_config_version}"
+}
+
+loom {
+    mixin {
+        defaultRefmapName = 'nightconfigfixes.refmap.json'
+    }
+    runs {
+        client {
+            client()
+            runDir 'run/client'
+        }
+        server {
+            server()
+            runDir 'run/server'
+        }
+    }
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.version
+    }
+}
+
+jar {
+    from('LICENSE.md') {
+        into 'META-INF/licenses'
+        rename { 'MPL-2.0.txt' }
+    }
+    from('third-party/licenses') {
+        into 'META-INF/licenses'
+    }
+    from('third-party/sources/night-config-3.8.4') {
+        into 'META-INF/third-party-sources/night-config-3.8.4'
+    }
+    from('THIRD-PARTY-NOTICES.md') {
+        into 'META-INF'
+    }
+    from('README.md') {
+        into 'META-INF'
+        rename { 'PORT-NOTICE.md' }
+    }
+}
+
+tasks.named('sourcesJar') {
+    from('LICENSE.md') {
+        into 'META-INF/licenses'
+        rename { 'MPL-2.0.txt' }
+    }
+    from('third-party/licenses') {
+        into 'META-INF/licenses'
+    }
+    from('third-party/sources/night-config-3.8.4') {
+        into 'META-INF/third-party-sources/night-config-3.8.4'
+    }
+    from('THIRD-PARTY-NOTICES.md') {
+        into 'META-INF'
+    }
+    from('README.md') {
+        into 'META-INF'
+        rename { 'PORT-NOTICE.md' }
+    }
+}
